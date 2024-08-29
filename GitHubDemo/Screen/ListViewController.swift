@@ -18,7 +18,6 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        print("ViewDidLoad")
         bindingStyle()
         bindingUI()
         binding()
@@ -67,6 +66,7 @@ class ListViewController: UIViewController {
     // private property
     private var store: StoreOf<ListViewModel> = Store(initialState: ListViewModel.State(), reducer: { ListViewModel() })
     private var cancelables: [AnyCancellable] = []
+    private let basicThreshold = 700
     
     private enum Section: Hashable {
         case main
@@ -86,10 +86,19 @@ class ListViewController: UIViewController {
     }
 }
 
-
-
 extension ListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("aa")
+        // TODO: profileView
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetHeight = scrollView.contentOffset.y
+        guard offsetHeight > 0 else { return }
+        let state = listVM.state
+        let callNextApiThreshold = basicThreshold + (state.loadedPage - 1) * 2000
+        if !state.isFetching && offsetHeight > CGFloat(callNextApiThreshold) {
+            let willLoadingSince = listVM.state.loadedPage * 20 + 1
+            listVM.send(.paginated(since: willLoadingSince))
+        }
     }
 }

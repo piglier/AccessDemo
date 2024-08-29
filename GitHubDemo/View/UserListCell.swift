@@ -29,7 +29,7 @@ class UserListCell: UICollectionViewCell {
         addSubview(staffStackView)
         staffStackView.translatesAutoresizingMaskIntoConstraints = false
         staffStackView.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: 15).isActive = true
-        avatarView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        staffStackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         staffStackView.addArrangedSubview(userNameLabel)
         userNameLabel.setContentHuggingPriority(.required, for: .vertical)
@@ -60,6 +60,19 @@ class UserListCell: UICollectionViewCell {
         task.resume()
     }
     
+    private func createStaffLabel(label: UILabel) {
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        label.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        label.textAlignment = .center
+        label.font = UIFont(name: "Helvetica", size: 20)
+        label.text = "STAFF"
+        label.clipsToBounds = true
+        label.layer.cornerRadius = 15
+        label.textColor = .white
+        label.backgroundColor = .systemBlue
+    }
+    
     private func binding() {
         userListCellVM.publisher.avatarPath.removeDuplicates().sink { [weak self] avatarPath in
             if let avatarPath = avatarPath {
@@ -68,6 +81,8 @@ class UserListCell: UICollectionViewCell {
         }.store(in: &cancelable)
         
         userListCellVM.publisher.loginName.removeDuplicates().sink { [weak self] loginName in
+            self?.userNameLabel.textColor = .lightGray
+            self?.userNameLabel.font = UIFont(name: "Helvetica", size: 18)
             self?.userNameLabel.text = loginName
         }.store(in: &cancelable)
         
@@ -76,8 +91,10 @@ class UserListCell: UICollectionViewCell {
                 return UILabel()
             }() : nil
             if let unwrappedLabel = self?.staffLabel {
+                unwrappedLabel.text = "Staff"
                 self?.staffStackView.addArrangedSubview(unwrappedLabel)
-                unwrappedLabel.setContentHuggingPriority(.defaultLow, for: .vertical)
+                self?.createStaffLabel(label: unwrappedLabel)
+                
             }
         }.store(in: &cancelable)
     }

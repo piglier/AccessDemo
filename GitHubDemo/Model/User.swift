@@ -45,10 +45,20 @@ import Foundation
  }
  */
 
-struct User: Codable, Hashable, Equatable {
+struct User: Codable, Hashable, Equatable, Identifiable {
     let avatarPath: String
     let login: String
     let siteAdmin: Bool
+    let id: UUID
+    
+   
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.avatarPath = try container.decode(String.self, forKey: .avatarPath)
+        self.login = try container.decode(String.self, forKey: .login)
+        self.siteAdmin = try container.decode(Bool.self, forKey: .siteAdmin)
+        self.id = UUID()
+    }
     
     private enum CodingKeys: String, CodingKey {
         case login
