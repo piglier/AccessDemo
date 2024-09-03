@@ -46,18 +46,18 @@ import Foundation
  */
 
 
-struct Profile: Codable {
-    let avatarURL: String
+struct Profile: Codable, Equatable {
+    let avatarPath: String
     let login: String
-    let siteAdmin: String
+    let siteAdmin: Bool
     let bio: String?
     let name: String
-    let location: String
+    let location: String?
     let blog: String
     
     private enum CodingKeys: String, CodingKey {
         case login, bio, name, location, blog
-        case avatarURL = "avatar_url"
+        case avatarPath = "avatar_url"
         case siteAdmin = "site_admin"
     }
 }

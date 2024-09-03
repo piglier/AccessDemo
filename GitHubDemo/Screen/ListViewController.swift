@@ -11,9 +11,10 @@ import ComposableArchitecture
 
 class ListViewController: UIViewController {
 
-    lazy var listVM: ViewStoreOf<ListViewModel> = ViewStoreOf<ListViewModel>(store, observe: { $0 })
+    lazy var listVM: ViewStoreOf<ListViewModel> = ViewStoreOf<ListViewModel>(listStore, observe: { $0 })
+    lazy var profileVS: ViewStoreOf<ProfileReducer> = ViewStoreOf<ProfileReducer>(profileStore, observe: { $0 })
     
-    var presentPofileView: (() -> Void)?
+    var presentPofileView: ((StoreOf<ProfileReducer>) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +65,8 @@ class ListViewController: UIViewController {
     
     
     // private property
-    private var store: StoreOf<ListViewModel> = Store(initialState: ListViewModel.State(), reducer: { ListViewModel() })
+    private var listStore: StoreOf<ListViewModel> = Store(initialState: ListViewModel.State(), reducer: { ListViewModel() })
+    private var profileStore: StoreOf<ProfileReducer> = Store(initialState: ProfileReducer.State(), reducer: { ProfileReducer() })
     private var cancelables: [AnyCancellable] = []
     private let basicThreshold = 700
     
@@ -77,18 +79,16 @@ class ListViewController: UIViewController {
         cell.populate(user: itemIdentifier)
         return cell
     }
-    
-    @objc
-    private func naviToProfile() {
-        if let naviToProfile = presentPofileView {
-            naviToProfile()
-        }
-    }
 }
 
 extension ListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO: profileView
+        if listVM.state.users.count > indexPath.row {
+            let login = listVM.state.users[indexPath.row].login
+            profileVS.send(.fetch(login))
+            guard let present = presentPofileView else { return }
+            present(profileStore)
+        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

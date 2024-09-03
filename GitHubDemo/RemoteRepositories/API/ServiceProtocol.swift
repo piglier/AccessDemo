@@ -15,5 +15,5 @@ protocol ServiceProtocol {
     func getUserList(since: Int) async throws -> [User]
     
     func getProfile(login: String) async throws -> Profile
-    
+
 }

@@ -57,7 +57,7 @@ final class CompositeServiceMonitor: ServiceMonitorProtocol {
 
 final class ServiceMonitor: ServiceMonitorProtocol {
     
-    let queue: DispatchQueue = DispatchQueue(label: "com.piglier.CathayBKHK.ServiceMonitor", qos: .utility)
+    let queue: DispatchQueue = DispatchQueue(label: "com.piglier.GitHub.ServiceMonitor", qos: .utility)
     let pointOfInterest = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: .pointsOfInterest)
     
     init() {}

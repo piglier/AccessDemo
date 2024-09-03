@@ -15,11 +15,17 @@ extension Service {
         
         let properties = route.requestProperties
         
-        guard let url = URL(string: properties.path, relativeTo: serverConfig.apiBaseUrl as URL) else {
+        guard let url = URL(string: "\(serverConfig.apiBaseUrl)\(properties.path)") else {
             fatalError(
               "URL(string: \(properties.path), relativeToURL: \(serverConfig.apiBaseUrl)) == nil"
             )
         }
+//        
+//        guard let url = URL(string: properties.path, relativeTo: serverConfig.apiBaseUrl as URL) else {
+//            fatalError(
+//              "URL(string: \(properties.path), relativeToURL: \(serverConfig.apiBaseUrl)) == nil"
+//            )
+//        }
         
         monitor.didCreateRequest(path: properties.path)
         

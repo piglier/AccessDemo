@@ -91,10 +91,8 @@ class UserListCell: UICollectionViewCell {
                 return UILabel()
             }() : nil
             if let unwrappedLabel = self?.staffLabel {
-                unwrappedLabel.text = "Staff"
                 self?.staffStackView.addArrangedSubview(unwrappedLabel)
                 self?.createStaffLabel(label: unwrappedLabel)
-                
             }
         }.store(in: &cancelable)
     }

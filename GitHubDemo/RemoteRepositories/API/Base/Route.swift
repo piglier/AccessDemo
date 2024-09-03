@@ -15,7 +15,7 @@ enum Route {
         case let .list(since):
             return (.GET, "?since=\(since)&per_page=20")
         case let .profile(login):
-                return (.GET, "/\(login)")
+            return (.GET, "/\(login)")
         }
     }
 }
