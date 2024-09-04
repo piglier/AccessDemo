@@ -28,27 +28,47 @@ class ProfileViewController: UIViewController {
     }
     
     private func bindingUI() {
-        view.addSubview(avatarImageView)
+        view.addSubview(avatarStack)
+        avatarStack.translatesAutoresizingMaskIntoConstraints = false
+        avatarStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        avatarStack.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        avatarStack.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        avatarStack.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        
+        avatarStack.addArrangedSubview(avatarImageView)
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
-        avatarImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        avatarImageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
+        avatarImageView.topAnchor.constraint(equalTo: self.avatarStack.topAnchor, constant: 50).isActive = true
         avatarImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
         avatarImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         avatarImageView.clipsToBounds = true
         avatarImageView.layer.cornerRadius = 75
         
-        view.addSubview(userNameLabel)
+        avatarStack.addArrangedSubview(userNameLabel)
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        userNameLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        userNameLabel.topAnchor.constraint(equalTo: self.avatarImageView.bottomAnchor, constant: 10).isActive = true
         userNameLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         userNameLabel.font = UIFont(name: "Helvetica", size: 25)
+        
+//        view.addSubview(avatarImageView)
+//        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+//        avatarImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+//        avatarImageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
+//        avatarImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
+//        avatarImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+//        avatarImageView.clipsToBounds = true
+//        avatarImageView.layer.cornerRadius = 75
+        
+//        view.addSubview(userNameLabel)
+//        userNameLabel.translatesAutoresizingMaskIntoConstraints = false
+//        userNameLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+//        userNameLabel.topAnchor.constraint(equalTo: self.avatarImageView.bottomAnchor, constant: 10).isActive = true
+//        userNameLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+//        userNameLabel.font = UIFont(name: "Helvetica", size: 25)
         
         view.addSubview(linearView)
         linearView.translatesAutoresizingMaskIntoConstraints = false
         linearView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive = true
         linearView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
-        linearView.topAnchor.constraint(equalTo: self.userNameLabel.bottomAnchor, constant: 20).isActive = true
+        linearView.topAnchor.constraint(equalTo: self.avatarStack.bottomAnchor, constant: 20).isActive = true
         linearView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         view.addSubview(staffHStackView)
@@ -89,7 +109,6 @@ class ProfileViewController: UIViewController {
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         locationLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
         locationLabel.font = UIFont(name: "Helvetica", size: 16)
-        
 
         view.addSubview(linkStackView)
         linkStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -128,6 +147,20 @@ class ProfileViewController: UIViewController {
             self?.loginLabel.text = profile.login
             self?.locationLabel.text = profile.location ?? "UnKnow"
             
+            if let bio = profile.bio {
+                let bioLabel = UILabel()
+                bioLabel.text = bio
+                self?.avatarStack.addArrangedSubview(bioLabel)
+            }
+            
+            if profile.siteAdmin {
+                let siteAdmibLabel = GitHubLabelFactory.createLabel(type: .mediumStaff)
+                self?.staffVStackView.addArrangedSubview(siteAdmibLabel)
+            }
+            guard !profile.blog.isEmpty else {
+                self?.linkLabel.text = "NA"
+                return
+            }
             let attributedString = NSMutableAttributedString(string: profile.blog)
             attributedString.addAttribute(.underlineStyle, value: 1, range: NSMakeRange(0, attributedString.length))
             attributedString.addAttribute(.underlineColor, value: UIColor.systemBlue, range: NSMakeRange(0, attributedString.length))
@@ -138,9 +171,16 @@ class ProfileViewController: UIViewController {
     
     
     // private property
+    private let avatarStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 20
+        stack.alignment = .center
+       return stack
+    }()
     
     private let avatarImageView: UIImageView = {
-        return UIImageView(image: UIImage(systemName: "person"))
+        return UIImageView()
     }()
     private let userNameLabel = UILabel()
     private let linearView: UIView = {
