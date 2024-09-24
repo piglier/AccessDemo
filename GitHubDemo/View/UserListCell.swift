@@ -60,19 +60,6 @@ class UserListCell: UICollectionViewCell {
         task.resume()
     }
     
-    private func createStaffLabel(label: UILabel) {
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.widthAnchor.constraint(equalToConstant: 90).isActive = true
-        label.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        label.textAlignment = .center
-        label.font = UIFont(name: "Helvetica", size: 20)
-        label.text = "STAFF"
-        label.clipsToBounds = true
-        label.layer.cornerRadius = 15
-        label.textColor = .white
-        label.backgroundColor = .systemBlue
-    }
-    
     private func binding() {
         userListCellVM.publisher.avatarPath.removeDuplicates().sink { [weak self] avatarPath in
             if let avatarPath = avatarPath {
@@ -87,13 +74,9 @@ class UserListCell: UICollectionViewCell {
         }.store(in: &cancelable)
         
         userListCellVM.publisher.isAdmin.removeDuplicates().sink { [weak self] isAmin in
-            self?.staffLabel = isAmin ? {
-                return UILabel()
-            }() : nil
-            if let unwrappedLabel = self?.staffLabel {
-                self?.staffStackView.addArrangedSubview(unwrappedLabel)
-                self?.createStaffLabel(label: unwrappedLabel)
-            }
+            self?.staffLabel = isAmin ? GitHubLabelFactory.createLabel(type: .mediumStaff) : nil
+            guard let unwrappedLabel = self?.staffLabel else { return }
+            self?.staffStackView.addArrangedSubview(unwrappedLabel)
         }.store(in: &cancelable)
     }
     

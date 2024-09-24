@@ -15,6 +15,8 @@ class ListViewController: UIViewController {
     lazy var profileVS: ViewStoreOf<ProfileReducer> = ViewStoreOf<ProfileReducer>(profileStore, observe: { $0 })
     
     var presentPofileView: ((StoreOf<ProfileReducer>) -> Void)?
+    
+    private var combineLastest: AnyCancellable?
 
     override func viewDidLoad() {
         super.viewDidLoad()

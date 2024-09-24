@@ -30,10 +30,9 @@ class ProfileViewController: UIViewController {
     private func bindingUI() {
         view.addSubview(avatarStack)
         avatarStack.translatesAutoresizingMaskIntoConstraints = false
-        avatarStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         avatarStack.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        avatarStack.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        avatarStack.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        avatarStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15).isActive = true
+        avatarStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15).isActive = true
         
         avatarStack.addArrangedSubview(avatarImageView)
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -47,22 +46,6 @@ class ProfileViewController: UIViewController {
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
         userNameLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         userNameLabel.font = UIFont(name: "Helvetica", size: 25)
-        
-//        view.addSubview(avatarImageView)
-//        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
-//        avatarImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-//        avatarImageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
-//        avatarImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
-//        avatarImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-//        avatarImageView.clipsToBounds = true
-//        avatarImageView.layer.cornerRadius = 75
-        
-//        view.addSubview(userNameLabel)
-//        userNameLabel.translatesAutoresizingMaskIntoConstraints = false
-//        userNameLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-//        userNameLabel.topAnchor.constraint(equalTo: self.avatarImageView.bottomAnchor, constant: 10).isActive = true
-//        userNameLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-//        userNameLabel.font = UIFont(name: "Helvetica", size: 25)
         
         view.addSubview(linearView)
         linearView.translatesAutoresizingMaskIntoConstraints = false
@@ -88,7 +71,6 @@ class ProfileViewController: UIViewController {
         staffHStackView.addArrangedSubview(staffVStackView)
         staffVStackView.addArrangedSubview(loginLabel)
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
-        loginLabel.leadingAnchor.constraint(equalTo: staffVStackView.leadingAnchor, constant: 0).isActive = true
         loginLabel.font = UIFont(name: "Helvetica", size: 16)
         
         view.addSubview(locationStackView)
@@ -150,11 +132,13 @@ class ProfileViewController: UIViewController {
             if let bio = profile.bio {
                 let bioLabel = UILabel()
                 bioLabel.text = bio
+                bioLabel.numberOfLines = 0
+                bioLabel.lineBreakMode = .byWordWrapping
                 self?.avatarStack.addArrangedSubview(bioLabel)
             }
             
             if profile.siteAdmin {
-                let siteAdmibLabel = GitHubLabelFactory.createLabel(type: .mediumStaff)
+                let siteAdmibLabel = GitHubLabelFactory.createLabel(type: .smallStaff)
                 self?.staffVStackView.addArrangedSubview(siteAdmibLabel)
             }
             guard !profile.blog.isEmpty else {
@@ -202,7 +186,7 @@ class ProfileViewController: UIViewController {
     {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.alignment = .center
+        stack.alignment = .leading
         stack.spacing = 8
         return stack
     }()
@@ -241,4 +225,38 @@ class ProfileViewController: UIViewController {
     private let linkLabel = UILabel()
     
     private var cancelables: [AnyCancellable] = []
+    
+    
+    private lazy var userViewStore = ViewStoreOf<UserReducer>(userStore, observe: { $0 })
+    private var userStore = Store(initialState: UserReducer.State(), reducer: { UserReducer() })
+}
+
+
+struct UserReducer: Reducer {
+    enum Action {
+        case modify(String), grow, remove
+    }
+    struct State: Equatable {
+        var id: UUID = UUID()
+        var name: String = ""
+        var age: Int = 1
+    }
+
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
+            switch action {
+            case .grow:
+                state.age += 1
+                return .none
+            case let .modify(name):
+                state.name = name
+                return .none
+            case .remove:
+                state.name = ""
+                return .none
+            }
+        }
+    }
+    
+    
 }

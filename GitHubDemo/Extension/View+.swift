@@ -74,13 +74,13 @@ extension UIView {
 }
 
 struct GithubLabel {
-    static func createStaffLabel(width: CGFloat, height: CGFloat) -> UILabel {
+    static func createStaffLabel(width: CGFloat, height: CGFloat, size: CGFloat) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.widthAnchor.constraint(equalToConstant: width).isActive = true
         label.heightAnchor.constraint(equalToConstant: height).isActive = true
         label.textAlignment = .center
-        label.font = UIFont(name: "Helvetica", size: 20)
+        label.font = UIFont(name: "Helvetica", size: size)
         label.text = "STAFF"
         label.clipsToBounds = true
         label.layer.cornerRadius = height / 2
@@ -97,11 +97,11 @@ struct GitHubLabelFactory {
     static func createLabel(type: GithubLabelType) ->  UILabel{
         switch type {
         case .smallStaff:
-            return GithubLabel.createStaffLabel(width: 30, height: 10)
+            return GithubLabel.createStaffLabel(width: 60, height: 20, size: 15)
         case .mediumStaff:
-            return GithubLabel.createStaffLabel(width: 60, height: 20)
+            return GithubLabel.createStaffLabel(width: 90, height: 30, size: 20)
         case .largeStaff:
-            return GithubLabel.createStaffLabel(width: 90, height: 30)
+            return GithubLabel.createStaffLabel(width: 120, height: 35, size: 25)
         }
     }
 }

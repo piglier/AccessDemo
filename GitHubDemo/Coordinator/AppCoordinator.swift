@@ -28,7 +28,6 @@ class AppCoordinator: Coordinator {
     
     
     // private func
-    
     private func present(store: StoreOf<ProfileReducer>) {
         let profileVC = ProfileViewController()
         profileVC.store = store
