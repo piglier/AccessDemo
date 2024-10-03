@@ -8,37 +8,39 @@
 import UIKit
 import ComposableArchitecture
 
-protocol Coordinator: AnyObject {
-    var navigationController: UINavigationController { get set }
-    func start()
-}
-
-/// 用來處理導航
-class AppCoordinator: Coordinator {
+class AppCoordinator: PresentationCoordinator {
+    var childCoordinators: [Coordinator] = []
+    var rootViewController = ListViewController()
     
-    var navigationController: UINavigationController
-    
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+    init(window: UIWindow) {
+        window.rootViewController = rootViewController
+        window.makeKeyAndVisible()
     }
     
     func start() {
-        naviToList()
+        route()
     }
     
-    
-    // private func
-    private func present(store: StoreOf<ProfileReducer>) {
-        let profileVC = ProfileViewController()
-        profileVC.store = store
-        navigationController.present(profileVC, animated: true)
+    private func presentProfleWithStore(_ store: StoreOf<ProfileReducer>) {
+        let profileCoordinaotor = ProfileCoordinator(store)
+        presentationCoordinator(coordinator: profileCoordinaotor, animated: true)
     }
     
-    private func naviToList() {
-        let listViewController = ListViewController()
-        listViewController.presentPofileView = {[weak self] store in
-            self?.present(store: store)
+    private func route() {
+        rootViewController.presentPofileView = { [weak self] store in
+            self?.presentProfleWithStore(store)
         }
-        navigationController.pushViewController(listViewController, animated: true)
     }
+    
+}
+
+class ProfileCoordinator: PresentationCoordinator {
+    var childCoordinators: [Coordinator] = []
+    var rootViewController: ProfileViewController
+    
+    init(_ store: StoreOf<ProfileReducer>) {
+        rootViewController = ProfileViewController(store: store)
+    }
+    
+    func start() {}
 }

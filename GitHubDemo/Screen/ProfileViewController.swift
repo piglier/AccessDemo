@@ -14,6 +14,16 @@ class ProfileViewController: UIViewController {
     lazy var profileVS: ViewStoreOf<ProfileReducer> = ViewStoreOf<ProfileReducer>(store, observe: { $0 })
     var store: StoreOf<ProfileReducer> = Store(initialState: ProfileReducer.State(), reducer: { ProfileReducer() })
     
+    init(store: StoreOf<ProfileReducer>) {
+        super.init(nibName: nil, bundle: nil)
+        self.store = store
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     override func viewDidLoad() {
         bindingStyle()
         bindingUI()
