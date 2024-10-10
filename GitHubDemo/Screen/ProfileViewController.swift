@@ -29,97 +29,86 @@ class ProfileViewController: UIViewController {
         bindingUI()
         binding()
     }
-    
-    
-    // private function
-    
+
+    /// private function
     private func bindingStyle() {
         view.backgroundColor = .white
     }
     
     private func bindingUI() {
-        view.addSubview(avatarStack)
-        avatarStack.translatesAutoresizingMaskIntoConstraints = false
-        avatarStack.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        avatarStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15).isActive = true
-        avatarStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15).isActive = true
+        let padding:            CGFloat = 15
+        let imageViewLength:    CGFloat = 30
+        let largeTopSpacing:    CGFloat = 50
+        let smallTopSpacing:    CGFloat = 20
+        let stackHeight:        CGFloat = 80
         
-        avatarStack.addArrangedSubview(avatarImageView)
-        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
-        avatarImageView.topAnchor.constraint(equalTo: self.avatarStack.topAnchor, constant: 50).isActive = true
-        avatarImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        avatarImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-        avatarImageView.clipsToBounds = true
-        avatarImageView.layer.cornerRadius = 75
+        view.addSubView(avatarStack, constraints:[
+            avatarStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            avatarStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            avatarStack.topAnchor.constraint(equalTo: view.topAnchor, constant: largeTopSpacing)
+        ])
         
-        avatarStack.addArrangedSubview(userNameLabel)
-        userNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        userNameLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        userNameLabel.font = UIFont(name: "Helvetica", size: 25)
+        avatarStack.addArrangedSubviews([avatarImageView, userNameLabel])
         
-        view.addSubview(linearView)
-        linearView.translatesAutoresizingMaskIntoConstraints = false
-        linearView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive = true
-        linearView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
-        linearView.topAnchor.constraint(equalTo: self.avatarStack.bottomAnchor, constant: 20).isActive = true
-        linearView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        view.addSubview(staffHStackView)
-        staffHStackView.translatesAutoresizingMaskIntoConstraints = false
-        staffHStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive = true
-        staffHStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
-        staffHStackView.topAnchor.constraint(equalTo: self.linearView.bottomAnchor, constant: 20).isActive = true
-        staffHStackView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        avatarStack.addSubView(userNameLabel, constraints: [
+            userNameLabel.heightAnchor.constraint(equalToConstant: imageViewLength)
+        ])
         
-        staffHStackView.addArrangedSubview(staffImageView)
-        staffImageView.translatesAutoresizingMaskIntoConstraints = false
-        staffImageView.leadingAnchor.constraint(equalTo: staffHStackView.leadingAnchor, constant: 0).isActive = true
-        staffImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        staffImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        staffImageView.tintColor = .black
+        view.addSubView(linearView, constraints: [
+            linearView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            linearView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            linearView.topAnchor.constraint(equalTo: avatarStack.bottomAnchor, constant: smallTopSpacing),
+            linearView.heightAnchor.constraint(equalToConstant: 1)
+        ])
         
-        staffHStackView.addArrangedSubview(staffVStackView)
+        view.addSubView(staffHStackView, constraints: [
+            staffHStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            staffHStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            staffHStackView.topAnchor.constraint(equalTo: linearView.bottomAnchor, constant: smallTopSpacing),
+            staffHStackView.heightAnchor.constraint(equalToConstant: stackHeight)
+        ])
+        
+        staffHStackView.addArrangedSubviews([staffImageView, staffVStackView])
+        
+        staffHStackView.addSubView(staffImageView, constraints: [
+            staffImageView.leadingAnchor.constraint(equalTo: staffHStackView.leadingAnchor, constant: 0),
+            staffImageView.heightAnchor.constraint(equalToConstant: imageViewLength),
+            staffImageView.widthAnchor.constraint(equalToConstant: imageViewLength)
+        ])
+        
         staffVStackView.addArrangedSubview(loginLabel)
-        loginLabel.translatesAutoresizingMaskIntoConstraints = false
-        loginLabel.font = UIFont(name: "Helvetica", size: 16)
+    
+        view.addSubView(locationStackView, constraints: [
+            locationStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            locationStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            locationStackView.topAnchor.constraint(equalTo: self.staffHStackView.bottomAnchor, constant: padding),
+            locationStackView.heightAnchor.constraint(equalToConstant: stackHeight)
+        ])
         
-        view.addSubview(locationStackView)
-        locationStackView.translatesAutoresizingMaskIntoConstraints = false
-        locationStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive = true
-        locationStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
-        locationStackView.topAnchor.constraint(equalTo: self.staffHStackView.bottomAnchor, constant: 15).isActive = true
-        locationStackView.heightAnchor.constraint(equalToConstant: 80).isActive = true
-     
-        locationStackView.addArrangedSubview(locationImageView)
-        locationImageView.translatesAutoresizingMaskIntoConstraints = false
-        locationImageView.leadingAnchor.constraint(equalTo: locationStackView.leadingAnchor, constant: 0).isActive = true
-        locationImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        locationImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        locationImageView.tintColor = .black
+        locationStackView.addArrangedSubviews([locationImageView, locationLabel])
         
-        locationStackView.addArrangedSubview(locationLabel)
-        locationLabel.translatesAutoresizingMaskIntoConstraints = false
-        locationLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        locationLabel.font = UIFont(name: "Helvetica", size: 16)
+        locationStackView.addSubView(locationImageView, constraints: [
+            locationImageView.leadingAnchor.constraint(equalTo: locationStackView.leadingAnchor, constant: 0),
+            locationImageView.heightAnchor.constraint(equalToConstant: imageViewLength),
+            locationImageView.widthAnchor.constraint(equalToConstant: imageViewLength)
+        ])
 
-        view.addSubview(linkStackView)
-        linkStackView.translatesAutoresizingMaskIntoConstraints = false
-        linkStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive = true
-        linkStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
-        linkStackView.topAnchor.constraint(equalTo: self.locationStackView.bottomAnchor, constant: 15).isActive = true
-        linkStackView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+
+        view.addSubView(linkStackView, constraints: [
+            linkStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            linkStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            linkStackView.topAnchor.constraint(equalTo: locationStackView.bottomAnchor, constant: padding),
+            linkStackView.heightAnchor.constraint(equalToConstant: stackHeight)
+        ])
         
-        linkStackView.addArrangedSubview(linkImageView)
-        linkImageView.translatesAutoresizingMaskIntoConstraints = false
-        linkImageView.leadingAnchor.constraint(equalTo: linkStackView.leadingAnchor, constant: 0).isActive = true
-        linkImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        linkImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        linkImageView.tintColor = .black
+        linkStackView.addArrangedSubviews([linkImageView, linkLabel])
         
-        linkStackView.addArrangedSubview(linkLabel)
-        linkLabel.translatesAutoresizingMaskIntoConstraints = false
-        linkLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        linkLabel.font = UIFont(name: "Helvetica", size: 16)
+        linkStackView.addSubView(linkImageView, constraints: [
+            linkImageView.leadingAnchor.constraint(equalTo: self.linkStackView.leadingAnchor, constant: 0),
+            linkImageView.heightAnchor.constraint(equalToConstant: imageViewLength),
+            linkImageView.widthAnchor.constraint(equalToConstant: imageViewLength)
+        ])
     }
     
     private func binding() {
@@ -163,76 +152,76 @@ class ProfileViewController: UIViewController {
         }.store(in: &cancelables)
     }
     
+    private let avatarStack = UIStackView {
+        $0.spacing = 20
+        $0.axis = .vertical
+        $0.alignment = .center
+    }
     
-    // private property
-    private let avatarStack: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 20
-        stack.alignment = .center
-       return stack
-    }()
+    private let avatarImageView = GitHubLabelFactory.createImageView(type: .largeAvatar)
     
-    private let avatarImageView: UIImageView = {
-        return UIImageView()
-    }()
-    private let userNameLabel = UILabel()
-    private let linearView: UIView = {
-        let v = UIView()
-        v.backgroundColor = .lightGray
-        return v
-    }()
+    private let userNameLabel = UILabel {
+        $0.font = UIFont(name: "Helvetica", size: 25)
+    }
     
-    private let staffHStackView: UIStackView =
-    {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.spacing = 20
-        stack.alignment = .center
-        return stack
-    }()
     
-    private let staffVStackView: UIStackView =
-    {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.alignment = .leading
-        stack.spacing = 8
-        return stack
-    }()
+    private let linearView = UIView {
+        $0.backgroundColor = .lightGray
+    }
     
-    private let staffImageView: UIImageView = {
-        return UIImageView(image: UIImage(systemName: "person.fill"))
-    }()
-    private let loginLabel = UILabel()
+    private let staffHStackView = UIStackView {
+        $0.spacing = 20
+        $0.axis = .horizontal
+        $0.alignment = .center
+    }
+    
+    private let staffVStackView = UIStackView {
+        $0.spacing = 8
+        $0.axis = .vertical
+        $0.alignment = .leading
+    }
+    
+    private let staffImageView = UIImageView {
+        $0.image = UIImage(systemName: "person.fill")
+        $0.tintColor = .black
+    }
+    
+    private let loginLabel = UILabel {
+        $0.font = UIFont(name: "Helvetica", size: 16)
+    }
     // 顯示是否為員工
     private var staffLabel: UILabel?
     
-    private let locationStackView: UIStackView =
-    {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.alignment = .center
-        stack.spacing = 20
-        return stack
-    }()
-    private let locationImageView: UIImageView = {
-        return UIImageView(image: UIImage(systemName: "location.north.circle.fill"))
-    }()
-    private let locationLabel = UILabel()
+    private let locationStackView = UIStackView {
+        $0.spacing = 20
+        $0.axis = .horizontal
+        $0.alignment = .center
+    }
     
-    private let linkStackView: UIStackView =
-    {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.alignment = .center
-        stack.spacing = 20
-        return stack
-    }()
-    private let linkImageView: UIImageView = {
-        return UIImageView(image: UIImage(systemName: "link"))
-    }()
-    private let linkLabel = UILabel()
+    private let locationImageView = UIImageView {
+        $0.image = UIImage(systemName: "location.north.circle.fill")
+        $0.tintColor = .black
+    }
+    
+
+    private let locationLabel = UILabel {
+        $0.font = UIFont(name: "Helvetica", size: 16)
+    }
+    
+    private let linkStackView = UIStackView {
+        $0.spacing = 20
+        $0.axis = .horizontal
+        $0.alignment = .center
+    }
+    
+    private let linkImageView = UIImageView {
+        $0.image = UIImage(systemName: "link")
+        $0.tintColor = .black
+    }
+    
+    private let linkLabel = UILabel {
+        $0.font = UIFont(name: "Helvetica", size: 16)
+    }
     
     private var cancelables: [AnyCancellable] = []
     
@@ -267,6 +256,5 @@ struct UserReducer: Reducer {
             }
         }
     }
-    
-    
+
 }
