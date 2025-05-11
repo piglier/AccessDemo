@@ -35,6 +35,7 @@
 		5392D5112C70BBA4009CBB26 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5392D5102C70BBA4009CBB26 /* Profile.swift */; };
 		5392D5132C70BDCC009CBB26 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5392D5122C70BDCC009CBB26 /* Service.swift */; };
 		5392D5162C70BE24009CBB26 /* Service+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5392D5152C70BE24009CBB26 /* Service+.swift */; };
+		53ED63412DBE34010026BF78 /* ServiceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ED63402DBE34010026BF78 /* ServiceClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 		5392D5102C70BBA4009CBB26 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		5392D5122C70BDCC009CBB26 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		5392D5152C70BE24009CBB26 /* Service+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Service+.swift"; sourceTree = "<group>"; };
+		53ED63402DBE34010026BF78 /* ServiceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				5392D50A2C70B754009CBB26 /* ServerConfig.swift */,
 				5392D50C2C70B776009CBB26 /* ServiceProtocol.swift */,
 				5392D5122C70BDCC009CBB26 /* Service.swift */,
+				53ED63402DBE34010026BF78 /* ServiceClient.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -414,6 +417,7 @@
 				5392D5072C70B2BB009CBB26 /* HttpMethod.swift in Sources */,
 				5392D4C12C705A0A009CBB26 /* AppDelegate.swift in Sources */,
 				5392D5162C70BE24009CBB26 /* Service+.swift in Sources */,
+				53ED63412DBE34010026BF78 /* ServiceClient.swift in Sources */,
 				5392D50F2C70B8FD009CBB26 /* User.swift in Sources */,
 				5392D5052C70B29F009CBB26 /* Route.swift in Sources */,
 				5392D4C32C705A0A009CBB26 /* SceneDelegate.swift in Sources */,

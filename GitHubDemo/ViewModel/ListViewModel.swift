@@ -8,13 +8,30 @@
 import Foundation
 import ComposableArchitecture
 
-class ListViewModel: Reducer {
+enum UserError: Error, Equatable {
+    case networkError(String)
+    case decodingError
+}
 
+extension UserError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .networkError(let msg):
+            return msg
+        case .decodingError:
+            return "解析異常"
+        }
+    }
+}
+
+class ListViewModel: Reducer {
+    
+    @Dependency (\.serviceClient) var serviceClient
     
     init() {}
     
-    enum Action {
-        case viewDidLoad, paginated(since: Int), userList(Result<[User], Error>)
+    enum Action: Equatable {
+        case viewDidLoad, paginated(since: Int), userList(Result<[User], UserError>)
     }
     
     struct State: Equatable {
@@ -32,19 +49,27 @@ class ListViewModel: Reducer {
             case .viewDidLoad:
                 return .run { await $0(.paginated(since: 1)) }
             case let .paginated(since):
+                guard !state.isFetching else { return .none }
                 state.isFetching = true
-                return .run { await $0(.userList(Result { try await Service().getUserList(since: since)} )) }
+                state.errorMsg = nil
+                return .run{ send in
+                    do {
+                        let users = try await self.serviceClient.getUserList(since)
+                        await send(.userList(.success(users)))
+                    } catch {
+                        await send(.userList(.failure(.decodingError)))
+                    }
+                }
             case let .userList(.success(users)):
                 state.users = state.users + users
                 state.loadedPage += 1
                 state.isFetching = false
                 return .none
-             case let .userList(.failure(error)):
+            case let .userList(.failure(error)):
                 state.errorMsg = error.localizedDescription
                 state.isFetching = false
                 return .none
             }
         }
     }
-
 }
