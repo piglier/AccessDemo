@@ -1,0 +1,28 @@
+version: 2.1
+
+orbs:
+  macos: circleci/macos@2.3.4
+  ruby: circleci/ruby@2.0.0
+
+jobs:
+  build-and-test:
+    macos:
+      xcode: 16.2.0
+    environment:
+      FL_OUTPUT_DIR: output
+    steps:
+      - checkout
+      - ruby/install-deps
+      - run:
+          name: Fastlane
+          command: bundle exec fastlane test
+      - store_artifacts:
+          path: output
+      - store_test_results:
+          path: output/scan
+
+workflows:
+  build-test:
+    jobs:
+      - build-and-test
+

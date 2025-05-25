@@ -26,7 +26,7 @@ extension UserError: LocalizedError {
 
 class ListViewModel: Reducer {
     
-    @Dependency (\.serviceClient) var serviceClient
+    @Dependency(\.serviceClient) var serviceClient
     
     init() {}
     

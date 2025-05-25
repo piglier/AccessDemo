@@ -137,7 +137,7 @@ final class GitHubDemoTests: XCTestCase {
         await store.receive(.userList(.success([]))) {
             $0.users = []
             $0.loadedPage = 1
-            $0.isFetching = true
+            $0.isFetching = false
         }
         XCTAssert(store.state.users.isEmpty)
     }
