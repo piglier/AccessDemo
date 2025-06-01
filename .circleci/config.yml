@@ -11,7 +11,21 @@ jobs:
       FL_OUTPUT_DIR: output
     steps:
       - checkout
-      - ruby/install-deps
+
+      # 安裝 Bundler（以免 CI 的 bundler 太舊）
+      - run:
+          name: Install Bundler
+          command: gem install bundler
+
+      # 禁用 frozen 鎖定，避免 Gemfile.lock 安裝錯誤
+      - run:
+          name: Unfreeze bundler lockfile
+          command: bundle config set frozen false
+
+      # 安裝 Gem
+      - run:
+          name: Install Ruby Gems
+          command: bundle install
       - run:
           name: Fastlane
           command: bundle exec fastlane test
