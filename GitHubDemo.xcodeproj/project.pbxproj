@@ -280,7 +280,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				539C7D112DEC1CC90003B17C /* PBXTargetDependency */,
 			);
 			name = GitHubDemo;
 			packageProductDependencies = (
@@ -458,10 +457,6 @@
 			isa = PBXTargetDependency;
 			target = 5392D4BC2C705A0A009CBB26 /* GitHubDemo */;
 			targetProxy = 5392D4DE2C705A0A009CBB26 /* PBXContainerItemProxy */;
-		};
-		539C7D112DEC1CC90003B17C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 539C7D102DEC1CC90003B17C /* ComposableArchitecture */;
 		};
 /* End PBXTargetDependency section */
 
@@ -790,11 +785,6 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		5392D4F22C705E50009CBB26 /* ComposableArchitecture */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5392D4F12C705E50009CBB26 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
-			productName = ComposableArchitecture;
-		};
-		539C7D102DEC1CC90003B17C /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5392D4F12C705E50009CBB26 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
