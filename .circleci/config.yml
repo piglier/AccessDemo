@@ -26,11 +26,22 @@ jobs:
       - run:
           name: Install Ruby Gems
           command: bundle install
+
+      # 繞過 Swift Macro Plugin 驗證限制
+      - run:
+          name: Bypass Swift Macro Plugin validation
+          command: |
+            defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
+            defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+
+      # 執行 Fastlane 測試    
       - run:
           name: Fastlane
           command: bundle exec fastlane test
+
       - store_artifacts:
           path: output
+
       - store_test_results:
           path: output/scan
 
