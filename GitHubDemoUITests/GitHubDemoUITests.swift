@@ -38,4 +38,62 @@ final class GitHubDemoUITests: XCTestCase {
             }
         }
     }
+    
+    // MARK: - 1. App 啟動後有資料
+
+        func testListLoadsUsers() throws {
+            let app = XCUIApplication()
+            app.launch()
+
+            // ❗️你在 ListViewController 的 collectionView 建議設定
+            // collectionView.accessibilityIdentifier = "UserList"
+            let list = app.collectionViews["UserList"]
+
+            // 最多等 5 秒，等第一個 cell 出現
+            let firstCell = list.cells.element(boundBy: 0)
+            XCTAssertTrue(firstCell.waitForExistence(timeout: 5), "使用者清單應該載入至少一筆資料")
+        }
+
+        // MARK: - 2. 點擊 cell 會開啟 Profile 畫面
+
+        func testTapUserShowsProfile() throws {
+            let app = XCUIApplication()
+            app.launch()
+
+            let list = app.collectionViews["UserList"]
+            let firstCell = list.cells.element(boundBy: 0)
+            XCTAssertTrue(firstCell.waitForExistence(timeout: 5))
+            firstCell.tap()
+
+            // ❗️假設 Profile 介面有一個 label 或 navigation title
+            // 並且你加上了 identifier "ProfileView"
+            let profileView = app.otherElements["ProfileView"]
+            XCTAssertTrue(profileView.waitForExistence(timeout: 3), "點擊使用者後應跳到 Profile 畫面")
+        }
+
+        // MARK: - 3. 滑到底部觸發分頁，載入更多 cell
+
+        func testPaginationLoadsMoreUsers() throws {
+            let app = XCUIApplication()
+            app.launch()
+
+            let list = app.collectionViews["UserList"]
+            XCTAssertTrue(list.waitForExistence(timeout: 5))
+
+            // 先記錄目前 cell 數
+            let originalCount = list.cells.count
+            XCTAssertGreaterThan(originalCount, 0, "初始應該有資料")
+
+            // 滑到最底多次以觸發分頁
+            for _ in 0..<5 {
+                list.swipeUp(velocity: .fast)
+            }
+            // 最多等 5 秒，看 cell 數量是否增加
+            let expectation = XCTNSPredicateExpectation(
+                predicate: NSPredicate(format: "count > %d", originalCount),
+                object: list.cells
+            )
+            let result = XCTWaiter().wait(for: [expectation], timeout: 5)
+            XCTAssertEqual(result, .completed, "分頁後 cell 數應該增加")
+        }
 }

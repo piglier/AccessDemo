@@ -109,6 +109,7 @@ class ProfileViewController: UIViewController {
             linkImageView.heightAnchor.constraint(equalToConstant: imageViewLength),
             linkImageView.widthAnchor.constraint(equalToConstant: imageViewLength)
         ])
+        view.accessibilityIdentifier = "ProfileView"
     }
     
     private func binding() {

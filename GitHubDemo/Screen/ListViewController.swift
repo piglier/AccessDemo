@@ -44,6 +44,7 @@ class ListViewController: UIViewController {
         collectionView.dataSource = dataSource
         collectionView.delegate = self
         collectionView.register(UserListCell.self, forCellWithReuseIdentifier: "UserListCell")
+        collectionView.accessibilityIdentifier = "UserList"
     }
     
     private func createLayout() -> UICollectionViewLayout {
