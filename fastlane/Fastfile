@@ -26,7 +26,7 @@ platform :ios do
       clean: true,
       device: "iPhone 15 Pro (17.5)",
       scheme: "GitHubDemo",
-      include_simulator_logs: true,
+      include_simulator_logs: false,
       xcargs: "-destination-timeout 120"   
     )
   end
