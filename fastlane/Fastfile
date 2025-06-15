@@ -23,9 +23,11 @@ platform :ios do
   desc "Runs all the tests"
   lane :test do
     run_tests(
+      clean: true,
       device: "iPhone 15 Pro (17.5)",
       scheme: "GitHubDemo",
-      include_simulator_logs: false
+      include_simulator_logs: true,
+      xcargs: "-destination-timeout 120"   
     )
   end
 

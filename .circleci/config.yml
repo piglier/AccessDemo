@@ -37,12 +37,8 @@ jobs:
       # 執行 Fastlane 測試    
       - run:
           name: Fastlane with keep-alive
-          command: |
-            while sleep 30; do echo "🌀 Running tests..."; done &
-            KEEP_ALIVE_PID=$!
-            trap "kill $KEEP_ALIVE_PID" EXIT
-
-            bundle exec fastlane test
+          command: bundle exec fastlane test
+          no_output_timeout: 20m
 
       - store_artifacts:
           path: output
